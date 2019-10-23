@@ -1,8 +1,8 @@
 {
-  "name": "releasy-site",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "releasy",
+  "version": "0.0.0",
+  "description": "Releazy",
+  "main": "sever.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node server.js",
@@ -14,7 +14,11 @@
     "url": "git+https://github.com/releazy/releazy.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Alison Monteiro",
+    "email": "alisonmonteiro.10@gmail.com",
+    "url": "alisonmonteiro.com.br"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/releazy/releazy/issues"
