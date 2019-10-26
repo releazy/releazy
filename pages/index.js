@@ -1,7 +1,9 @@
 import React from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Header from '../components/Header'
 import { clientCredentials } from '../credentials/firebase/client'
+import '../style.css'
 
 class Index extends React.Component {
   static async getInitialProps({ req }) {
@@ -51,7 +53,9 @@ class Index extends React.Component {
     return (
       <main>
         {org && repos ? (
-          <div>list</div>
+          <div>
+            <Header name={org.name} picture={org.avatar_url} />
+          </div>
         ) : (
           <div>home</div>
         )}

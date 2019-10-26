@@ -1,4 +1,6 @@
-module.exports = {
+const withCss = require('@zeit/next-css')
+
+module.exports = withCss({
   env: {
     FIREBASE_CLIENT_API_KEY: process.env.FIREBASE_CLIENT_API_KEY,
     FIREBASE_CLIENT_AUTH_DOMAIN: process.env.FIREBASE_CLIENT_AUTH_DOMAIN,
@@ -9,4 +11,4 @@ module.exports = {
     FIREBASE_CLIENT_APP_ID: process.env.FIREBASE_CLIENT_APP_ID,
     FIREBASE_CLIENT_MEASUREMENT_ID: process.env.FIREBASE_CLIENT_MEASUREMENT_ID,
   }
-}
+})
