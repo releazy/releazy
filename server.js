@@ -1,12 +1,20 @@
+require('dotenv').config()
+
 const Koa = require('koa')
 const next = require('next')
 const Router = require('koa-router')
-const KoaSubdomain = require('koa-subdomain');
+const KoaSubdomain = require('koa-subdomain')
+const admin = require('firebase-admin')
+const serverCredentials = require('./credentials/firebase/server')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const environment = process.env.NODE_ENV !== 'production'
 const app = next({ dev: environment })
 const handle = app.getRequestHandler()
+
+const firebase = admin.initializeApp({
+  credential: admin.credential.cert(serverCredentials)
+}, 'server')
 
 app.prepare().then(() => {
   const server = new Koa()
@@ -18,14 +26,15 @@ app.prepare().then(() => {
   router.get('*', async context => {
     const [ subdomain ] = context.state.wildcardSubdomains
 
-    await handle(context.req, context.res)
+    context.req.subdomain = subdomain
     context.response = false
-    context.subdomain = subdomain
+    await handle(context.req, context.res)
   })
 
   subdomain.use('*', router.routes())
 
   server.use(async (context, next) => {
+    context.req.firebaseServer = firebase
     context.res.statusCode = 200
     await next()
   })

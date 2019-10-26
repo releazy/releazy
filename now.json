@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "FIREBASE_CLIENT_API_KEY": "@firebase_client_api_key",
+      "FIREBASE_CLIENT_AUTH_DOMAIN": "@firebase_client_auth_domain",
+      "FIREBASE_CLIENT_DATABASE_URL": "@firebase_client_database_url",
+      "FIREBASE_CLIENT_PROJECT_ID": "@firebase_client_project_id",
+      "FIREBASE_CLIENT_STORAGE_BUCKET": "@firebase_client_storage_bucket",
+      "FIREBASE_CLIENT_MESSAGING_SENDER_ID": "@firebase_client_messaging_sender_id",
+      "FIREBASE_CLIENT_APP_ID": "@firebase_client_app_id",
+      "FIREBASE_CLIENT_MEASUREMENT_ID": "@firebase_client_measurement_id"
+    }
+  },
+  "env": {
+    "FIREBASE_SERVER_TYPE": "@firebase_server_type",
+    "FIREBASE_CLIENT_API_KEY": "@firebase_client_api_key",
+    "FIREBASE_SERVER_TYPE": "@firebase_server_type",
+    "FIREBASE_SERVER_PROJECT_ID": "@firebase_server_project_id",
+    "FIREBASE_SERVER_PRIVATE_KEY_ID": "@firebase_server_private_key_id",
+    "FIREBASE_SERVER_PRIVATE_KEY": "@firebase_server_private_key",
+    "FIREBASE_SERVER_CLIENT_EMAIL": "@firebase_server_client_email",
+    "FIREBASE_SERVER_CLIENT_ID": "@firebase_server_client_id",
+    "FIREBASE_SERVER_AUTH_URI": "@firebase_server_auth_uri",
+    "FIREBASE_SERVER_TOKEN_URI": "@firebase_server_token_uri",
+    "FIREBASE_SERVER_AUTH_PROVIDER_X509_CERT_URL": "@firebase_server_auth_provider_x509_cert_url",
+    "FIREBASE_SERVER_CLIENT_X509_CERT_URL": "@firebase_server_client_x509_cert_url"
+  }
+}

@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/releazy/releazy#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "firebase": "^7.2.2",
+    "firebase-admin": "^8.6.1",
     "koa": "^2.10.0",
     "koa-router": "^7.4.0",
     "koa-subdomain": "^3.0.0",
