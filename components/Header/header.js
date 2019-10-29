@@ -1,5 +1,5 @@
-import { Figure, Header, Menu } from './style'
 import Link from 'next/link'
+import { Figure, Header, Menu } from './style'
 
 const MainHeader = ({ name, picture }) => {
   return (
