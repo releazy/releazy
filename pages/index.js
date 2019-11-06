@@ -1,6 +1,7 @@
 import React from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Tag from '../components/Tag'
 import Header from '../components/Header'
 import Repository from '../components/Repository'
 import MainContainer from '../containers/MainContainer'
@@ -77,20 +78,19 @@ class Index extends React.Component {
             <Header name={org.name} picture={org.avatar_url} />
 
             <MainContainer>
-              {repos.map((repo, key) => (
-                <Repository key={key} name={repo.name} slug={repo.name} description={repo.description} />
-              ))}
+              {repos.length > 0 ? (
+                repos.map((repo, key) => (
+                  <Repository key={key} name={repo.name} slug={repo.name} description={repo.description} />
+                ))
+              ) : (
+                <div>Oops! No repos were found.</div>
+              )}
 
-              {tags.map((tag, key) => {
-                return (
-                  <div>
-                    <h3>{tag.id}</h3>
-                    <div className="entry-content">
-                      {tag.notes || ''}
-                    </div>
-                  </div>
-                )
-              })}
+              {tags.length > 0 ? (
+                tags.map((tag, key) => <Tag key={key} id={tag.id} notes={tag.notes} />)
+              ) : (
+                <div>Oops! No tags were found.</div>
+              )}
             </MainContainer>
           </div>
         ) : (
