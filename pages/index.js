@@ -10,14 +10,42 @@ import '../style.css'
 
 class Index extends React.Component {
   static async getInitialProps({ req }) {
-    const { subdomain } = req
-    return { subdomain }
+    const { subdomain, firebaseServer } = req
+    const database = firebaseServer.firestore()
+    const organizationRef = database.collection('organization').doc(subdomain)
+    const repositoryRef = database.collection('repository')
+
+    try {
+      const organization = await organizationRef.get()
+      const repositories = await repositoryRef.get()
+
+      const org = organization.data()
+      const repos = []
+
+      repositories.forEach(repo => {
+        const { ref, id } = repo
+        const repositoryOrgRef = repo.data().organization
+
+        if (repositoryOrgRef && organizationRef.isEqual(repositoryOrgRef)) {
+          repos.push({ ...repo.data(), id, ref })
+        }
+      })
+
+      return {
+        org,
+        repos,
+        subdomain,
+      }
+    } catch (error) {
+      console.error(error)
+      return { subdomain }
+    }
   }
 
-  constructor (props, items) {
+  constructor (props) {
     super(props)
     this.state = {
-      subdomain: this.props.subdomain,
+      subdomain: props.subdomain,
       org: null,
       repos: [],
       tags: [],
