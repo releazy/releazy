@@ -1,13 +1,13 @@
+import MarkdownIt from 'markdown-it'
 import Link from 'next/link'
-import { Item } from './style'
+import { Item, Content } from './style'
 
+const mardown = new MarkdownIt()
 const Tag = ({ id, notes }) => {
   return (
     <Item>
-      <h3>{id}</h3>
-      <div className="entry-content">
-        {notes || ''}
-      </div>
+      <h3 className="title">{id}</h3>
+      <Content className="entry-content" dangerouslySetInnerHTML={{__html: mardown.render(notes)}}></Content>
     </Item>
   )
 }
