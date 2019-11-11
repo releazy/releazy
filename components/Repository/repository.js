@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 import { Item } from './style'
 
 const Repository = ({ name, slug, description }) => {
@@ -10,6 +11,12 @@ const Repository = ({ name, slug, description }) => {
       </Item>
     </Link>
   )
+}
+
+Repository.propTypes = {
+  name: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 }
 
 export default Repository

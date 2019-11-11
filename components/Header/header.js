@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 import { Figure, Header, Menu } from './style'
 
 const MainHeader = ({ name, picture }) => {
@@ -18,6 +19,11 @@ const MainHeader = ({ name, picture }) => {
       </Menu>
     </Header>
   )
+}
+
+Header.propTypes = {
+  name: PropTypes.string,
+  picture: PropTypes.string,
 }
 
 export default MainHeader
