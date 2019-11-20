@@ -11,29 +11,43 @@ import '../style.css'
 class Index extends React.Component {
   static async getInitialProps({ req }) {
     const { subdomain, firebaseServer } = req
-    const database = firebaseServer.firestore()
-    const organizationRef = database.collection('organization').doc(subdomain)
-    const repositoryRef = database.collection('repository')
 
     try {
+      const database = firebaseServer.firestore()
+      const organizationRef = database.collection('organization').doc(subdomain)
+      const repositoryRef = database.collection('repository')
+      const tagRef = database.collection('tags')
+
       const organization = await organizationRef.get()
-      const repositories = await repositoryRef.get()
+      const repositoriesList = await repositoryRef.get()
+      const tagsList = await tagRef.get()
 
       const org = organization.data()
       const repos = []
+      const tags = []
 
-      repositories.forEach(repo => {
+      repositoriesList.forEach(repo => {
         const { ref, id } = repo
         const repositoryOrgRef = repo.data().organization
 
         if (repositoryOrgRef && organizationRef.isEqual(repositoryOrgRef)) {
           repos.push({ ...repo.data(), id, ref })
+
+          tagsList.forEach(tag => {
+            const tagRepoRef = tag.data().repository
+            const { ref, id } = tag
+
+            if (tagRepoRef && tagRepoRef.isEqual(repo.ref)) {
+              tags.push({ ...tag.data(), id, ref })
+            }
+          })
         }
       })
 
       return {
         org,
         repos,
+        tags,
         subdomain,
       }
     } catch (error) {
@@ -46,9 +60,9 @@ class Index extends React.Component {
     super(props)
     this.state = {
       subdomain: props.subdomain,
-      org: null,
-      repos: [],
-      tags: [],
+      org: props.org || null,
+      repos: props.repos || [],
+      tags: props.tags || [],
     }
   }
 
@@ -59,49 +73,52 @@ class Index extends React.Component {
       return false
     }
 
-    const organizationRef = database.collection('organization').doc(this.state.subdomain)
-    const repositoryRef = database.collection('repository').get()
-      .then(snapshot => {
-        snapshot.forEach(repo => {
-          const { ref, id } = repo
-          const organization = repo.data().organization
+    if (!this.state.org || !this.state.repos.length || !this.state.tags.length) {
+      console.log('front-end')
+      const organizationRef = database.collection('organization').doc(this.state.subdomain)
+      const repositoryRef = database.collection('repository').get()
+        .then(snapshot => {
+          snapshot.forEach(repo => {
+            const { ref, id } = repo
+            const organization = repo.data().organization
 
-          if (organization && organizationRef.isEqual(organization)) {
-            this.setState({
-              repos: [ ...this.state.repos, { ...repo.data(), id, ref }]
-            })
-          }
-        })
-      })
-
-    const tagsRef = database.collection('tags').get()
-      .then(snapshot => {
-        snapshot.forEach(tag => {
-          const repository = tag.data().repository
-          const { ref, id } = tag
-          const { repos, tags } = this.state
-
-          Object.keys(repos).map(key => {
-            if (repository && repos[key].ref.isEqual(repository)) {
-              this.setState({ tags: [...tags, { ...tag.data(), id, ref }]})
+            if (organization && organizationRef.isEqual(organization)) {
+              this.setState({
+                repos: [ ...this.state.repos, { ...repo.data(), id, ref }]
+              })
             }
           })
         })
-      })
 
-    organizationRef.get()
-      .then(doc => {
-        if (doc.exists) {
-          this.setState({org: doc.data()})
-        }
-      })
+      organizationRef.get()
+        .then(doc => {
+          if (doc.exists) {
+            this.setState({org: doc.data()})
+          }
+        })
+
+      const tagsRef = database.collection('tags').get()
+        .then(snapshot => {
+          snapshot.forEach(tag => {
+            const repository = tag.data().repository
+            const { ref, id } = tag
+            const { repos, tags } = this.state
+
+            Object.keys(repos).map(key => {
+              if (repository && repos[key].ref && repos[key].ref.isEqual(repository)) {
+                this.setState({ tags: [...tags, { ...tag.data(), id, ref }]})
+              }
+            })
+          })
+        })
+    }
   }
 
   render() {
     const { org, repos, tags } = this.state
     return (
       <main>
-        {org && repos ? (
+        {org ? (
           <div>
             <Header name={org.name} picture={org.avatar_url} />
 
