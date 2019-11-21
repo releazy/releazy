@@ -3,35 +3,18 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Tag from '../components/Tag'
 import Header from '../components/Header'
-import Repository from '../components/Repository'
 import MainContainer from '../containers/MainContainer'
 import { clientCredentials } from '../credentials/firebase/client'
+import { getOrganization, getRepositories, getTags } from '../data/firebase'
 import '../style.css'
-
-async function getOrganization(database, subdomain) {
-  const ref = database.collection('organization').doc(subdomain)
-  const organization = await ref.get()
-
-  return { organization, ref }
-}
-
-async function getRepositories(database) {
-  const ref = database.collection('repository')
-  const repositories = await ref.get()
-
-  return { repositories, ref }
-}
-
-async function getTags(database) {
-  const ref = database.collection('tags')
-  const tags = await ref.get()
-
-  return { tags, ref }
-}
 
 class Index extends React.Component {
   static async getInitialProps({ req }) {
     const { subdomain, firebaseServer } = req
+
+    if (!subdomain || subdomain === '') {
+      return { }
+    }
 
     try {
       const database = firebaseServer.firestore()
@@ -102,9 +85,11 @@ class Index extends React.Component {
         const { repositories: repositoriesList } = await getRepositories(database)
         const { tags: tagsList } = await getTags(database)
 
-        if (organization.exists) {
-          this.setState({org: organization.data()})
+        if (!organization.exists) {
+          return false
         }
+
+        this.setState({ org: organization.data() })
 
         repositoriesList.forEach(repo => {
           const { ref, id } = repo
@@ -139,22 +124,7 @@ class Index extends React.Component {
         {org ? (
           <div>
             <Header name={org.name} picture={org.avatar_url} />
-
-            <MainContainer>
-              {repos.length > 0 ? (
-                repos.map((repo, key) => (
-                  <Repository key={key} name={repo.name} slug={repo.name} description={repo.description} />
-                ))
-              ) : (
-                <div>Oops! No repos were found.</div>
-              )}
-
-              {tags.length > 0 ? (
-                tags.map((tag, key) => <Tag key={key} id={tag.id} notes={tag.notes} />)
-              ) : (
-                <div>Oops! No tags were found.</div>
-              )}
-            </MainContainer>
+            <MainContainer repos={repos} tags={tags} />
           </div>
         ) : (
           <div>home</div>
