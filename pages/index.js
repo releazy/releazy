@@ -10,7 +10,7 @@ import '../style.css'
 
 class Index extends React.Component {
   static async getInitialProps({ req, query }) {
-    const { subdomain, firebaseServer } = req
+    const { subdomain, firebaseServer } = req ? req : {}
     const { activeRepository } = query
 
     if (!subdomain || subdomain === '') {

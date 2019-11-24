@@ -5,10 +5,14 @@ import { Figure, Header, Menu } from './style'
 const MainHeader = ({ name, picture }) => {
   return (
     <Header>
-      <Figure>
-        <img src={picture} alt={`${name} logo`} />
-        <h2>{name}</h2>
-      </Figure>
+      <Link href="/home" as="/">
+        <a>
+          <Figure>
+            <img src={picture} alt={`${name} logo`} />
+            <h2>{name}</h2>
+          </Figure>
+        </a>
+      </Link>
       <Menu>
         <Link href='#' as='#'>
           <a>Login</a>

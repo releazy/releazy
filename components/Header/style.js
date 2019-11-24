@@ -6,6 +6,11 @@ export const Header = styled.header`
   align-items: center;
   padding: 8px 16px;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, .12);
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+  }
 `
 
 export const Figure = styled.figure`
@@ -19,6 +24,10 @@ export const Figure = styled.figure`
     border-radius: 100%;
     margin-right: 8px;
   }
+
+  h2 {
+    color: #000;
+  }
 `
 
 export const Menu = styled.div`
@@ -29,7 +38,6 @@ export const Menu = styled.div`
   a {
     color: #0070f3;
     margin-left: 16px;
-    text-decoration: none;
 
     &:hover {
       text-decoration: underline;
