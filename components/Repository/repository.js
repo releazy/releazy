@@ -4,7 +4,7 @@ import { Item } from './style'
 
 const Repository = ({ name, slug, description }) => {
   return (
-    <Link href={`repos/${slug}`} as={`repos/${slug}`}>
+    <Link href={`/repos/${slug}`} as={`/repos/${slug}`}>
       <Item>
         <h3>{name}</h3>
         <p>{description}</p>

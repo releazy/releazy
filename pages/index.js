@@ -9,8 +9,9 @@ import { getOrganization, getRepositories, getTags } from '../data/firebase'
 import '../style.css'
 
 class Index extends React.Component {
-  static async getInitialProps({ req }) {
+  static async getInitialProps({ req, query }) {
     const { subdomain, firebaseServer } = req
+    const { activeRepository } = query
 
     if (!subdomain || subdomain === '') {
       return { }
@@ -28,9 +29,13 @@ class Index extends React.Component {
 
       repositoriesList.forEach(repo => {
         const { ref, id } = repo
-        const repositoryOrgRef = repo.data().organization
+        const { name, organization: repositoryOrgRef } = repo.data()
 
         if (!repositoryOrgRef || !organizationRef.isEqual(repositoryOrgRef)) {
+          return false
+        }
+
+        if (activeRepository && activeRepository !== name) {
           return false
         }
 
@@ -51,6 +56,7 @@ class Index extends React.Component {
         repos,
         tags,
         subdomain,
+        activeRepository,
       }
     } catch (error) {
       console.error(error)
@@ -63,6 +69,7 @@ class Index extends React.Component {
 
     this.state = {
       subdomain: props.subdomain,
+      activeRepository: props.activeRepository || null,
       org: props.org || null,
       repos: props.repos || [],
       tags: props.tags || [],
@@ -118,13 +125,13 @@ class Index extends React.Component {
   }
 
   render() {
-    const { org, repos, tags } = this.state
+    const { org, repos, tags, activeRepository } = this.state
     return (
       <main>
         {org ? (
           <div>
             <Header name={org.name} picture={org.avatar_url} />
-            <MainContainer repos={repos} tags={tags} />
+            <MainContainer activeRepository={activeRepository} repos={repos} tags={tags} />
           </div>
         ) : (
           <div>home</div>

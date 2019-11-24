@@ -23,11 +23,18 @@ app.prepare().then(() => {
 
   server.subdomainOffset = 1
 
+  router.get('/repos/:activeRepository', async context => {
+    const [ subdomain ] = context.state.wildcardSubdomains
+    context.req.subdomain = subdomain
+    context.respond = false
+    await app.render(context.req, context.res, '/', context.params)
+  })
+
   router.get('*', async context => {
     const [ subdomain ] = context.state.wildcardSubdomains
 
     context.req.subdomain = subdomain
-    context.response = false
+    context.respond = false
     await handle(context.req, context.res)
   })
 

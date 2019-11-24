@@ -2,9 +2,9 @@ import Repository from '../../components/Repository'
 import Tag from '../../components/Tag'
 import { Container } from './style'
 
-const MainContainer = ({ repos, tags }) => (
+const MainContainer = ({ activeRepository, repos, tags }) => (
   <Container>
-    {repos.length > 0 && repos.map((repo, key) => (
+    {!activeRepository && repos.length > 0 && repos.map((repo, key) => (
       <Repository key={key} name={repo.name} slug={repo.name} description={repo.description} />
     ))}
 
