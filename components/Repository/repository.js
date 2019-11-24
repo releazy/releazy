@@ -7,7 +7,7 @@ const Repository = ({ name, slug, description }) => {
     <Link href={`/repos/${slug}`} as={`/repos/${slug}`}>
       <Item>
         <h3>{name}</h3>
-        <p>{description}</p>
+        <p>{description || 'No description'}</p>
       </Item>
     </Link>
   )

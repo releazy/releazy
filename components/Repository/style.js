@@ -10,6 +10,7 @@ export const Item = styled.a`
   text-align: left;
   width: 100%;
   cursor: pointer;
+  margin-top: 8px;
 
   &:hover {
     box-shadow: 1px 1px 6px rgba(0, 0, 0, .4);

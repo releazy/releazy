@@ -14,7 +14,7 @@ class Index extends React.Component {
     const { activeRepository } = query
 
     if (!subdomain || subdomain === '') {
-      return { }
+      return { subdomain: null }
     }
 
     try {
