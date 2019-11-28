@@ -2,7 +2,7 @@ import React from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Tag from '../components/Tag'
-import Header from '../components/Header'
+import SiteContainer from '../containers/SiteContainer'
 import MainContainer from '../containers/MainContainer'
 import { clientCredentials } from '../credentials/firebase/client'
 import { getOrganization, getRepositories, getTags } from '../data/firebase'
@@ -129,12 +129,9 @@ class Index extends React.Component {
     return (
       <main>
         {org ? (
-          <div>
-            <Header name={org.name} picture={org.avatar_url} />
-            <MainContainer activeRepository={activeRepository} repos={repos} tags={tags} />
-          </div>
+          <MainContainer org={org} activeRepository={activeRepository} repos={repos} tags={tags} />
         ) : (
-          <div>home</div>
+          <SiteContainer />
         )}
       </main>
     )
